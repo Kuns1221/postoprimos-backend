@@ -20,7 +20,7 @@
       "linha_fim_dados": 73,
       "coluna_data": 0,
       "coluna_total": 7,
-      "leitura": "penultima_linha_preenchida"
+      "leitura": "ultima_linha_preenchida"
     }
   },
   "tanques": [
