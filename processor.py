@@ -9,7 +9,6 @@ NOMES_EXIBICAO = {
     "Adit":   "Gasolina Aditivada",
     "Comum":  "Gasolina Comum",
     "Etanol": "Etanol",
-    "GNV":    "GNV",
 }
 
 def ler_valor(df: pd.DataFrame, linha: int, coluna: int) -> float:
@@ -199,8 +198,9 @@ def montar_resultado(rule: dict, estoques: dict, vendas: dict) -> dict:
             "resultado": round(estoque - venda, 2),
         })
 
-    # Ordena por nome
-    ordem = ["S500", "S10", "Adit", "Comum", "Etanol", "GNV"]
+    # Remove GNV e ordena
+    combustiveis_resultado = [c for c in combustiveis_resultado if c["combustivel"] != "GNV"]
+    ordem = ["S500", "S10", "Adit", "Comum", "Etanol"]
     combustiveis_resultado.sort(key=lambda x: ordem.index(x["combustivel"]) if x["combustivel"] in ordem else 99)
 
     total_estoque = round(sum(c["estoque"] for c in combustiveis_resultado), 2)
