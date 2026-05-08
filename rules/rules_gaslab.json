@@ -24,32 +24,106 @@
     }
   },
   "tanques": [
-    { "tanque": "TQ1", "coluna_estoque": 1, "nome_original": "ETANOL",        "combustivel": "Etanol" },
-    { "tanque": "TQ2", "coluna_estoque": 2, "nome_original": "DIESEL S-10",   "combustivel": "S10"    },
-    { "tanque": "TQ3", "coluna_estoque": 3, "nome_original": "DIESEL S-500",  "combustivel": "S500"   },
-    { "tanque": "TQ4", "coluna_estoque": 4, "nome_original": "GASOLINA COMUM","combustivel": "Comum"  },
-    { "tanque": "TQ5", "coluna_estoque": 5, "nome_original": "GASOLINA ADIT", "combustivel": "Adit"   }
+    {
+      "tanque": "TQ1",
+      "coluna_estoque": 1,
+      "nome_original": "ETANOL",
+      "combustivel": "Etanol"
+    },
+    {
+      "tanque": "TQ2",
+      "coluna_estoque": 2,
+      "nome_original": "DIESEL S-10",
+      "combustivel": "S10"
+    },
+    {
+      "tanque": "TQ3",
+      "coluna_estoque": 3,
+      "nome_original": "DIESEL S-500",
+      "combustivel": "S500"
+    },
+    {
+      "tanque": "TQ4",
+      "coluna_estoque": 4,
+      "nome_original": "GASOLINA COMUM",
+      "combustivel": "Comum"
+    },
+    {
+      "tanque": "TQ5",
+      "coluna_estoque": 5,
+      "nome_original": "GASOLINA ADIT",
+      "combustivel": "Adit"
+    }
   ],
   "agrupamento_estoque": {
-    "Etanol": { "tanques": ["TQ1"], "operacao": "direto" },
-    "S10":    { "tanques": ["TQ2"], "operacao": "direto" },
-    "S500":   { "tanques": ["TQ3"], "operacao": "direto" },
-    "Comum":  { "tanques": ["TQ4"], "operacao": "direto" },
-    "Adit":   { "tanques": ["TQ5"], "operacao": "direto" }
+    "Etanol": {
+      "tanques": [
+        "TQ1"
+      ],
+      "operacao": "direto"
+    },
+    "S10": {
+      "tanques": [
+        "TQ2"
+      ],
+      "operacao": "direto"
+    },
+    "S500": {
+      "tanques": [
+        "TQ3"
+      ],
+      "operacao": "direto"
+    },
+    "Comum": {
+      "tanques": [
+        "TQ4"
+      ],
+      "operacao": "direto"
+    },
+    "Adit": {
+      "tanques": [
+        "TQ5"
+      ],
+      "operacao": "direto"
+    }
   },
   "mapeamento_vendas": {
     "coluna_1": "Adit",
     "coluna_2": "S10",
     "coluna_3": "S500",
     "coluna_4": "Comum",
-    "coluna_5": "Etanol",
-    "coluna_6": "GNV"
+    "coluna_5": "Etanol"
   },
   "nomes_alternativos": {
-    "Etanol": ["ETANOL", "ALCOOL", "ÁLCOOL"],
-    "S10":    ["DIESEL S-10", "DIESEL S10", "S-10", "S10"],
-    "S500":   ["DIESEL S-500", "DIESEL BS500", "S-500", "S500"],
-    "Comum":  ["GASOLINA COMUM", "GAS. COMUM", "GAS.COMUM", "COMUM"],
-    "Adit":   ["GASOLINA ADIT", "GAS.WPOWER", "V-POWER", "ADITIVADA", "ADIT"]
+    "Etanol": [
+      "ETANOL",
+      "ALCOOL",
+      "ÁLCOOL"
+    ],
+    "S10": [
+      "DIESEL S-10",
+      "DIESEL S10",
+      "S-10",
+      "S10"
+    ],
+    "S500": [
+      "DIESEL S-500",
+      "DIESEL BS500",
+      "S-500",
+      "S500"
+    ],
+    "Comum": [
+      "GASOLINA COMUM",
+      "GAS. COMUM",
+      "GAS.COMUM",
+      "COMUM"
+    ],
+    "Adit": [
+      "GASOLINA ADIT",
+      "GAS.WPOWER",
+      "V-POWER",
+      "ADITIVADA",
+      "ADIT"
+    ]
   }
 }
