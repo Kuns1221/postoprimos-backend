@@ -121,7 +121,11 @@ def processar_gaslab(df: pd.DataFrame, rule: dict) -> dict:
     col_data_v = vnd_cfg.get("coluna_data", 0)
     linha_inicio_vnd = vnd_cfg["linha_inicio_dados"] - 1
     linha_fim_vnd = vnd_cfg["linha_fim_dados"] - 1
-    linha_vnd = penultima_linha_preenchida(df, col_data_v, linha_inicio_vnd, linha_fim_vnd)
+    leitura_vnd = vnd_cfg.get("leitura", "penultima_linha_preenchida")
+    if leitura_vnd == "ultima_linha_preenchida":
+        linha_vnd = ultima_linha_preenchida(df, col_data_v, linha_inicio_vnd, linha_fim_vnd)
+    else:
+        linha_vnd = penultima_linha_preenchida(df, col_data_v, linha_inicio_vnd, linha_fim_vnd)
 
     vendas = {}
     for chave_coluna, combustivel in mapeamento_vendas.items():
