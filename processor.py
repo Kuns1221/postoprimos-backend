@@ -22,21 +22,27 @@ def ler_valor(df: pd.DataFrame, linha: int, coluna: int) -> float:
     except (ValueError, IndexError):
         return 0.0
 
-def ultima_linha_preenchida(df: pd.DataFrame, coluna: int, linha_inicio: int, linha_fim: int) -> int:
-    """Retorna o índice da última linha preenchida em uma coluna dentro de um intervalo."""
+def _linha_tem_dados(df, linha, coluna_data):
+    ncols = min(8, df.shape[1])
+    for c in range(ncols):
+        if c == coluna_data:
+            continue
+        val = df.iloc[linha, c]
+        if isinstance(val, (int, float)) and not pd.isna(val) and val != 0:
+            return True
+    return False
+
+def ultima_linha_preenchida(df, coluna, linha_inicio, linha_fim):
     ultima = linha_inicio
     for i in range(linha_inicio, min(linha_fim + 1, len(df))):
-        val = df.iloc[i, coluna]
-        if not pd.isna(val) and str(val).strip() not in ("", "0"):
+        if _linha_tem_dados(df, i, coluna):
             ultima = i
     return ultima
 
-def penultima_linha_preenchida(df: pd.DataFrame, coluna: int, linha_inicio: int, linha_fim: int) -> int:
-    """Retorna o índice da penúltima linha preenchida em uma coluna dentro de um intervalo."""
+def penultima_linha_preenchida(df, coluna, linha_inicio, linha_fim):
     linhas = []
     for i in range(linha_inicio, min(linha_fim + 1, len(df))):
-        val = df.iloc[i, coluna]
-        if not pd.isna(val) and str(val).strip() not in ("", "0"):
+        if _linha_tem_dados(df, i, coluna):
             linhas.append(i)
     if len(linhas) >= 2:
         return linhas[-2]
@@ -146,7 +152,11 @@ def processar_cafe(df: pd.DataFrame, rule: dict) -> dict:
     col_data_v = vnd_cfg.get("coluna_data", 0)
     linha_inicio_vnd = vnd_cfg["linha_inicio_dados"] - 1
     linha_fim_vnd = vnd_cfg["linha_fim_dados"] - 1
-    linha_vnd = penultima_linha_preenchida(df, col_data_v, linha_inicio_vnd, linha_fim_vnd)
+    leitura_vnd = vnd_cfg.get("leitura", "penultima_linha_preenchida")
+    if leitura_vnd == "ultima_linha_preenchida":
+        linha_vnd = ultima_linha_preenchida(df, col_data_v, linha_inicio_vnd, linha_fim_vnd)
+    else:
+        linha_vnd = penultima_linha_preenchida(df, col_data_v, linha_inicio_vnd, linha_fim_vnd)
 
     estoques = {}
     vendas = {}
