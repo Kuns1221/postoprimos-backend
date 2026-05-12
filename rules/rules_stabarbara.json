@@ -1,0 +1,45 @@
+{
+  "posto": "stabarbara",
+  "arquivo": "SANTA_BARBARA",
+  "descricao": "Posto Santa Barbara",
+  "identificacao_conteudo": ["SANTA BARBARA", "SANTA BÁRBARA"],
+  "estrutura_planilha": {
+    "aba": "Plan1",
+    "estoque": {
+      "linha_tipo_combustivel": 6,
+      "linha_valores": 7
+    },
+    "vendas": {
+      "linha_cabecalho": 11,
+      "linha_valores": 13
+    }
+  },
+  "tanques": [
+    { "tanque": 1, "coluna": 1, "nome_original": "GASOLINA ADITIVADA", "combustivel": "Adit"   },
+    { "tanque": 2, "coluna": 2, "nome_original": "DIESEL S 10",        "combustivel": "S10"    },
+    { "tanque": 3, "coluna": 3, "nome_original": "DIESEL S-500",       "combustivel": "S500"   },
+    { "tanque": 4, "coluna": 4, "nome_original": "ETANOL COMUM",       "combustivel": "Etanol" },
+    { "tanque": 5, "coluna": 5, "nome_original": "GASOLINA COMUM",     "combustivel": "Comum"  }
+  ],
+  "agrupamento_estoque": {
+    "Adit":   { "tanques": [1], "operacao": "soma" },
+    "S10":    { "tanques": [2], "operacao": "soma" },
+    "S500":   { "tanques": [3], "operacao": "soma" },
+    "Etanol": { "tanques": [4], "operacao": "soma" },
+    "Comum":  { "tanques": [5], "operacao": "soma" }
+  },
+  "mapeamento_vendas": {
+    "ETANOL":      "Etanol",
+    "G. ADITIVADA":"Adit",
+    "G.COMUM":     "Comum",
+    "DIESEL S-10": "S10",
+    "DIESEL S-500":"S500"
+  },
+  "nomes_alternativos": {
+    "Adit":   ["GASOLINA ADITIVADA", "G. ADITIVADA", "V-POWER", "ADITIVADA"],
+    "S10":    ["DIESEL S 10", "DIESEL S-10", "DIESEL S10", "S10"],
+    "S500":   ["DIESEL S-500", "DIESEL S500", "DIESEL BS500", "S500"],
+    "Etanol": ["ETANOL COMUM", "ETANOL", "ALCOOL"],
+    "Comum":  ["GASOLINA COMUM", "G.COMUM", "GAS. COMUM"]
+  }
+}
