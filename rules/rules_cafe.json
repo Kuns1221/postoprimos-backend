@@ -1,0 +1,108 @@
+{
+  "posto": "cafe",
+  "arquivo": "REL_TREVO_5_Maio_26",
+  "descricao": "Posto Trevo Café",
+  "logica": "estoque_ultimo_dia_menos_venda_dia_anterior",
+  "estrutura_planilha": {
+    "aba": "~3104-1",
+    "estoque": {
+      "linha_cabecalho": 5,
+      "linha_inicio_dados": 7,
+      "linha_fim_dados": 36,
+      "coluna_data": 0,
+      "leitura": "ultima_linha_preenchida"
+    },
+    "vendas": {
+      "linha_cabecalho": 40,
+      "linha_inicio_dados": 41,
+      "linha_fim_dados": 71,
+      "coluna_data": 0,
+      "leitura": "ultima_linha_preenchida"
+    }
+  },
+  "combustiveis": [
+    {
+      "combustivel": "Etanol",
+      "nome_original_estoque": "ETANOL",
+      "colunas_estoque": [
+        1
+      ],
+      "operacao_estoque": "direto",
+      "coluna_venda": 1,
+      "nome_original_venda": "ETANOL"
+    },
+    {
+      "combustivel": "Adit",
+      "nome_original_estoque": "DT CLEAN",
+      "obs": "Gasolina aditivada — nome diferente neste posto",
+      "colunas_estoque": [
+        2
+      ],
+      "operacao_estoque": "direto",
+      "coluna_venda": 2,
+      "nome_original_venda": "DT CLEAN"
+    },
+    {
+      "combustivel": "Comum",
+      "nome_original_estoque": "GASOLINA",
+      "colunas_estoque": [
+        3
+      ],
+      "operacao_estoque": "direto",
+      "coluna_venda": 3,
+      "nome_original_venda": "GASOLINA"
+    },
+    {
+      "combustivel": "S10",
+      "nome_original_estoque": "DIESEL S10",
+      "colunas_estoque": [
+        4
+      ],
+      "operacao_estoque": "direto",
+      "coluna_venda": 4,
+      "nome_original_venda": "DIESEL S10"
+    },
+    {
+      "combustivel": "S500",
+      "nome_original_estoque": "DIESEL S500",
+      "obs": "2 tanques no estoque (col5 + col6 = soma). Coluna 5 vazia nas vendas, usar col 6",
+      "colunas_estoque": [
+        5,
+        6
+      ],
+      "operacao_estoque": "soma",
+      "coluna_venda": 6,
+      "nome_original_venda": "DIESEL S500"
+    }
+  ],
+  "nomes_alternativos": {
+    "Etanol": [
+      "ETANOL",
+      "ALCOOL",
+      "ÁLCOOL"
+    ],
+    "Adit": [
+      "DT CLEAN",
+      "GASOLINA ADIT",
+      "V-POWER",
+      "ADITIVADA"
+    ],
+    "Comum": [
+      "GASOLINA",
+      "GAS. COMUM",
+      "GAS.COMUM",
+      "GASOLINA COMUM"
+    ],
+    "S10": [
+      "DIESEL S10",
+      "DIESEL S-10",
+      "S-10"
+    ],
+    "S500": [
+      "DIESEL S500",
+      "DIESEL BS500",
+      "DIESEL S-500",
+      "BS500"
+    ]
+  }
+}
