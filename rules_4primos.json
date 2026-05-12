@@ -1,0 +1,129 @@
+{
+  "posto": "gaslab",
+  "arquivo": "RELATÓRIO_GASLAB",
+  "descricao": "Posto Gaslab",
+  "logica": "estoque_ultimo_dia_menos_venda_dia_anterior",
+  "estrutura_planilha": {
+    "aba": "POSTO GASLBAB",
+    "estoque": {
+      "linha_cabecalho_tanques": 4,
+      "linha_tipo_combustivel": 5,
+      "linha_capacidade": 6,
+      "linha_inicio_dados": 7,
+      "linha_fim_dados": 37,
+      "coluna_data": 0,
+      "leitura": "ultima_linha_preenchida"
+    },
+    "vendas": {
+      "linha_cabecalho": 41,
+      "linha_inicio_dados": 43,
+      "linha_fim_dados": 73,
+      "coluna_data": 0,
+      "coluna_total": 7,
+      "leitura": "ultima_linha_preenchida"
+    }
+  },
+  "tanques": [
+    {
+      "tanque": "TQ1",
+      "coluna_estoque": 1,
+      "nome_original": "ETANOL",
+      "combustivel": "Etanol"
+    },
+    {
+      "tanque": "TQ2",
+      "coluna_estoque": 2,
+      "nome_original": "DIESEL S-10",
+      "combustivel": "S10"
+    },
+    {
+      "tanque": "TQ3",
+      "coluna_estoque": 3,
+      "nome_original": "DIESEL S-500",
+      "combustivel": "S500"
+    },
+    {
+      "tanque": "TQ4",
+      "coluna_estoque": 4,
+      "nome_original": "GASOLINA COMUM",
+      "combustivel": "Comum"
+    },
+    {
+      "tanque": "TQ5",
+      "coluna_estoque": 5,
+      "nome_original": "GASOLINA ADIT",
+      "combustivel": "Adit"
+    }
+  ],
+  "agrupamento_estoque": {
+    "Etanol": {
+      "tanques": [
+        "TQ1"
+      ],
+      "operacao": "direto"
+    },
+    "S10": {
+      "tanques": [
+        "TQ2"
+      ],
+      "operacao": "direto"
+    },
+    "S500": {
+      "tanques": [
+        "TQ3"
+      ],
+      "operacao": "direto"
+    },
+    "Comum": {
+      "tanques": [
+        "TQ4"
+      ],
+      "operacao": "direto"
+    },
+    "Adit": {
+      "tanques": [
+        "TQ5"
+      ],
+      "operacao": "direto"
+    }
+  },
+  "mapeamento_vendas": {
+    "coluna_1": "Adit",
+    "coluna_2": "S10",
+    "coluna_3": "S500",
+    "coluna_4": "Comum",
+    "coluna_5": "Etanol"
+  },
+  "nomes_alternativos": {
+    "Etanol": [
+      "ETANOL",
+      "ALCOOL",
+      "ÁLCOOL"
+    ],
+    "S10": [
+      "DIESEL S-10",
+      "DIESEL S10",
+      "S-10",
+      "S10"
+    ],
+    "S500": [
+      "DIESEL S-500",
+      "DIESEL BS500",
+      "S-500",
+      "S500"
+    ],
+    "Comum": [
+      "GASOLINA COMUM",
+      "GAS. COMUM",
+      "GAS.COMUM",
+      "COMUM"
+    ],
+    "Adit": [
+      "GASOLINA ADIT",
+      "GAS.WPOWER",
+      "V-POWER",
+      "ADITIVADA",
+      "ADIT"
+    ]
+  }
+}
