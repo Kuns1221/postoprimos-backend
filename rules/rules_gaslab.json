@@ -1,6 +1,6 @@
 {
   "posto": "gaslab",
-  "arquivo": "RELATÓRIO_GASLAB",
+  "arquivo": "gaslab",
   "descricao": "Posto Gaslab",
   "logica": "estoque_ultimo_dia_menos_venda_dia_anterior",
   "estrutura_planilha": {

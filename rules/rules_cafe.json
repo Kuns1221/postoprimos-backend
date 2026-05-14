@@ -1,6 +1,6 @@
 {
   "posto": "cafe",
-  "arquivo": "REL_TREVO_5_Maio_26",
+  "arquivo": "cafe",
   "descricao": "Posto Trevo Café",
   "logica": "estoque_ultimo_dia_menos_venda_dia_anterior",
   "estrutura_planilha": {

@@ -1,6 +1,6 @@
 {
   "posto": "florida",
-  "arquivo": "RELATORIO_FLÓRIDA",
+  "arquivo": "florida",
   "descricao": "Posto Flórida",
   "estrutura_planilha": {
     "aba": "2025",
@@ -14,31 +14,103 @@
     }
   },
   "tanques": [
-    { "tanque": 1, "coluna": 0, "nome_original": "GAS. COMUM",   "combustivel": "Comum"    },
-    { "tanque": 2, "coluna": 1, "nome_original": "GAS. V-POWER", "combustivel": "Adit"     },
-    { "tanque": 3, "coluna": 2, "nome_original": "E.COMUM",      "combustivel": "Etanol"   },
-    { "tanque": 4, "coluna": 3, "nome_original": "E.V-POWER",    "combustivel": "EtanolVP" },
-    { "tanque": 5, "coluna": 4, "nome_original": "DIESEL S10",   "combustivel": "S10"      }
+    {
+      "tanque": 1,
+      "coluna": 0,
+      "nome_original": "GAS. COMUM",
+      "combustivel": "Comum"
+    },
+    {
+      "tanque": 2,
+      "coluna": 1,
+      "nome_original": "GAS. V-POWER",
+      "combustivel": "Adit"
+    },
+    {
+      "tanque": 3,
+      "coluna": 2,
+      "nome_original": "E.COMUM",
+      "combustivel": "Etanol"
+    },
+    {
+      "tanque": 4,
+      "coluna": 3,
+      "nome_original": "E.V-POWER",
+      "combustivel": "EtanolVP"
+    },
+    {
+      "tanque": 5,
+      "coluna": 4,
+      "nome_original": "DIESEL S10",
+      "combustivel": "S10"
+    }
   ],
   "agrupamento_estoque": {
-    "Comum":    { "tanques": [1], "operacao": "soma" },
-    "Adit":     { "tanques": [2], "operacao": "soma" },
-    "Etanol":   { "tanques": [3], "operacao": "soma" },
-    "EtanolVP": { "tanques": [4], "operacao": "soma" },
-    "S10":      { "tanques": [5], "operacao": "soma" }
+    "Comum": {
+      "tanques": [
+        1
+      ],
+      "operacao": "soma"
+    },
+    "Adit": {
+      "tanques": [
+        2
+      ],
+      "operacao": "soma"
+    },
+    "Etanol": {
+      "tanques": [
+        3
+      ],
+      "operacao": "soma"
+    },
+    "EtanolVP": {
+      "tanques": [
+        4
+      ],
+      "operacao": "soma"
+    },
+    "S10": {
+      "tanques": [
+        5
+      ],
+      "operacao": "soma"
+    }
   },
   "mapeamento_vendas": {
-    "GASO. COMUM":   "Comum",
+    "GASO. COMUM": "Comum",
     "GASO. V-POWER": "Adit",
-    "ETANOL COMUM":  "Etanol",
-    "E.V-POWER":     "EtanolVP",
-    "DIESEL S10":    "S10"
+    "ETANOL COMUM": "Etanol",
+    "E.V-POWER": "EtanolVP",
+    "DIESEL S10": "S10"
   },
   "nomes_alternativos": {
-    "Comum":    ["GAS. COMUM", "GASO. COMUM", "GASOLINA COMUM"],
-    "Adit":     ["GAS. V-POWER", "GASO. V-POWER", "V-POWER", "ADITIVADA"],
-    "Etanol":   ["E.COMUM", "ETANOL COMUM", "ETANOL", "ALCOOL"],
-    "EtanolVP": ["E.V-POWER", "ETANOL V-POWER", "ETANOL VPOWER"],
-    "S10":      ["DIESEL S10", "DIESEL S-10", "S10"]
+    "Comum": [
+      "GAS. COMUM",
+      "GASO. COMUM",
+      "GASOLINA COMUM"
+    ],
+    "Adit": [
+      "GAS. V-POWER",
+      "GASO. V-POWER",
+      "V-POWER",
+      "ADITIVADA"
+    ],
+    "Etanol": [
+      "E.COMUM",
+      "ETANOL COMUM",
+      "ETANOL",
+      "ALCOOL"
+    ],
+    "EtanolVP": [
+      "E.V-POWER",
+      "ETANOL V-POWER",
+      "ETANOL VPOWER"
+    ],
+    "S10": [
+      "DIESEL S10",
+      "DIESEL S-10",
+      "S10"
+    ]
   }
 }

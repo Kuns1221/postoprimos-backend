@@ -1,6 +1,6 @@
 {
   "posto": "mariuca",
-  "arquivo": "RELATORIO_COMBUSTIVEIS",
+  "arquivo": "mariuca",
   "descricao": "Posto Mariuca F1",
   "estrutura_planilha": {
     "aba": "PRIMOS F1(MARIUCA)",
@@ -11,11 +11,11 @@
       "coluna_data": 0,
       "leitura": "ultima_linha_preenchida",
       "colunas": {
-        "S10":    1,
+        "S10": 1,
         "Etanol": 2,
-        "S500":   3,
-        "Comum":  4,
-        "Adit":   5
+        "S500": 3,
+        "Comum": 4,
+        "Adit": 5
       }
     },
     "vendas": {
@@ -24,21 +24,43 @@
       "linha_fim_dados": 75,
       "coluna_data": 0,
       "leitura": "ultima_linha_preenchida",
-      "colunas_ignorar": [6],
+      "colunas_ignorar": [
+        6
+      ],
       "colunas": {
-        "S10":    1,
+        "S10": 1,
         "Etanol": 2,
-        "S500":   3,
-        "Comum":  4,
-        "Adit":   5
+        "S500": 3,
+        "Comum": 4,
+        "Adit": 5
       }
     }
   },
   "nomes_alternativos": {
-    "S10":    ["DIESEL S10", "DIESEL S-10", "S10"],
-    "Etanol": ["ETANOL COMUM", "ETANOL", "ALCOOL"],
-    "S500":   ["DIESEL S500", "DIESEL BS500", "S500"],
-    "Comum":  ["GASOLINA COM", "GASOLINA COMUM", "GAS. COMUM"],
-    "Adit":   ["GASOLINA ADIT", "GASOLINA ADITIVADA", "V-POWER"]
+    "S10": [
+      "DIESEL S10",
+      "DIESEL S-10",
+      "S10"
+    ],
+    "Etanol": [
+      "ETANOL COMUM",
+      "ETANOL",
+      "ALCOOL"
+    ],
+    "S500": [
+      "DIESEL S500",
+      "DIESEL BS500",
+      "S500"
+    ],
+    "Comum": [
+      "GASOLINA COM",
+      "GASOLINA COMUM",
+      "GAS. COMUM"
+    ],
+    "Adit": [
+      "GASOLINA ADIT",
+      "GASOLINA ADITIVADA",
+      "V-POWER"
+    ]
   }
 }

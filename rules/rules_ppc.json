@@ -1,6 +1,6 @@
 {
   "posto": "ppc",
-  "arquivo": "TREVO_III",
+  "arquivo": "ppc",
   "descricao": "Posto PPC - Trevo III",
   "estrutura_planilha": {
     "aba": "Plan1",
@@ -14,39 +14,151 @@
     }
   },
   "tanques": [
-    { "tanque": 1,  "coluna": 0, "nome_original": "OLEO DIESEL S500", "combustivel": "S500"    },
-    { "tanque": 2,  "coluna": 1, "nome_original": "OLEO DIESEL S500", "combustivel": "S500"    },
-    { "tanque": 3,  "coluna": 2, "nome_original": "OLEO DIESEL S500", "combustivel": "S500"    },
-    { "tanque": 4,  "coluna": 3, "nome_original": "OLEO DIESEL S10",  "combustivel": "S10"     },
-    { "tanque": 5,  "coluna": 4, "nome_original": "OLEO DIESEL S10",  "combustivel": "S10"     },
-    { "tanque": 6,  "coluna": 5, "nome_original": "OLEO DIESEL S10",  "combustivel": "S10"     },
-    { "tanque": 7,  "coluna": 6, "nome_original": "ETANOL V.POWER",   "combustivel": "EtanolVP"},
-    { "tanque": 8,  "coluna": 7, "nome_original": "GASOLINA V-POWER", "combustivel": "Adit"    },
-    { "tanque": 9,  "coluna": 8, "nome_original": "ETANOL COMUM",     "combustivel": "Etanol"  },
-    { "tanque": 10, "coluna": 9, "nome_original": "GASOLINA COMUM",   "combustivel": "Comum"   }
+    {
+      "tanque": 1,
+      "coluna": 0,
+      "nome_original": "OLEO DIESEL S500",
+      "combustivel": "S500"
+    },
+    {
+      "tanque": 2,
+      "coluna": 1,
+      "nome_original": "OLEO DIESEL S500",
+      "combustivel": "S500"
+    },
+    {
+      "tanque": 3,
+      "coluna": 2,
+      "nome_original": "OLEO DIESEL S500",
+      "combustivel": "S500"
+    },
+    {
+      "tanque": 4,
+      "coluna": 3,
+      "nome_original": "OLEO DIESEL S10",
+      "combustivel": "S10"
+    },
+    {
+      "tanque": 5,
+      "coluna": 4,
+      "nome_original": "OLEO DIESEL S10",
+      "combustivel": "S10"
+    },
+    {
+      "tanque": 6,
+      "coluna": 5,
+      "nome_original": "OLEO DIESEL S10",
+      "combustivel": "S10"
+    },
+    {
+      "tanque": 7,
+      "coluna": 6,
+      "nome_original": "ETANOL V.POWER",
+      "combustivel": "EtanolVP"
+    },
+    {
+      "tanque": 8,
+      "coluna": 7,
+      "nome_original": "GASOLINA V-POWER",
+      "combustivel": "Adit"
+    },
+    {
+      "tanque": 9,
+      "coluna": 8,
+      "nome_original": "ETANOL COMUM",
+      "combustivel": "Etanol"
+    },
+    {
+      "tanque": 10,
+      "coluna": 9,
+      "nome_original": "GASOLINA COMUM",
+      "combustivel": "Comum"
+    }
   ],
   "agrupamento_estoque": {
-    "S500":    { "tanques": [1, 2, 3],  "operacao": "soma" },
-    "S10":     { "tanques": [4, 5, 6],  "operacao": "soma" },
-    "EtanolVP":{ "tanques": [7],        "operacao": "soma" },
-    "Adit":    { "tanques": [8],        "operacao": "soma" },
-    "Etanol":  { "tanques": [9],        "operacao": "soma" },
-    "Comum":   { "tanques": [10],       "operacao": "soma" }
+    "S500": {
+      "tanques": [
+        1,
+        2,
+        3
+      ],
+      "operacao": "soma"
+    },
+    "S10": {
+      "tanques": [
+        4,
+        5,
+        6
+      ],
+      "operacao": "soma"
+    },
+    "EtanolVP": {
+      "tanques": [
+        7
+      ],
+      "operacao": "soma"
+    },
+    "Adit": {
+      "tanques": [
+        8
+      ],
+      "operacao": "soma"
+    },
+    "Etanol": {
+      "tanques": [
+        9
+      ],
+      "operacao": "soma"
+    },
+    "Comum": {
+      "tanques": [
+        10
+      ],
+      "operacao": "soma"
+    }
   },
   "mapeamento_vendas": {
-    "ET. COMUM":   "Etanol",
-    "ET.VPOWER":   "EtanolVP",
-    "GAS.COMUM":   "Comum",
-    "G.VPOWER":    "Adit",
+    "ET. COMUM": "Etanol",
+    "ET.VPOWER": "EtanolVP",
+    "GAS.COMUM": "Comum",
+    "G.VPOWER": "Adit",
     "DIESEL S-10": "S10",
-    "DIESEL S-500":"S500"
+    "DIESEL S-500": "S500"
   },
   "nomes_alternativos": {
-    "S500":    ["OLEO DIESEL S500", "DIESEL S500", "DIESEL BS500", "S500"],
-    "S10":     ["OLEO DIESEL S10", "DIESEL S10", "DIESEL S-10", "S10"],
-    "EtanolVP":["ETANOL V.POWER", "ETANOL VPOWER", "ET.VPOWER"],
-    "Adit":    ["GASOLINA V-POWER", "V-POWER", "G.VPOWER", "ADITIVADA"],
-    "Etanol":  ["ETANOL COMUM", "ET. COMUM", "ETANOL", "ALCOOL"],
-    "Comum":   ["GASOLINA COMUM", "GAS.COMUM", "GASOLINA"]
+    "S500": [
+      "OLEO DIESEL S500",
+      "DIESEL S500",
+      "DIESEL BS500",
+      "S500"
+    ],
+    "S10": [
+      "OLEO DIESEL S10",
+      "DIESEL S10",
+      "DIESEL S-10",
+      "S10"
+    ],
+    "EtanolVP": [
+      "ETANOL V.POWER",
+      "ETANOL VPOWER",
+      "ET.VPOWER"
+    ],
+    "Adit": [
+      "GASOLINA V-POWER",
+      "V-POWER",
+      "G.VPOWER",
+      "ADITIVADA"
+    ],
+    "Etanol": [
+      "ETANOL COMUM",
+      "ET. COMUM",
+      "ETANOL",
+      "ALCOOL"
+    ],
+    "Comum": [
+      "GASOLINA COMUM",
+      "GAS.COMUM",
+      "GASOLINA"
+    ]
   }
 }

@@ -1,6 +1,6 @@
 {
   "posto": "4primos",
-  "arquivo": "RELATORIO_TREVO",
+  "arquivo": "4primos",
   "descricao": "Auto Posto Quatro Primos",
   "estrutura_planilha": {
     "aba": "Plan1",
@@ -8,11 +8,14 @@
       "linha_cabecalho": 36,
       "linha_valores": 37,
       "colunas": {
-        "Comum":  0,
-        "Adit":   1,
+        "Comum": 0,
+        "Adit": 1,
         "Etanol": 2,
-        "S500":   3,
-        "S10":    [4, 5]
+        "S500": 3,
+        "S10": [
+          4,
+          5
+        ]
       }
     },
     "vendas": {
@@ -22,19 +25,41 @@
       "coluna_data": 0,
       "leitura": "ultima_linha_preenchida",
       "colunas": {
-        "Comum":  1,
-        "Adit":   2,
+        "Comum": 1,
+        "Adit": 2,
         "Etanol": 3,
-        "S500":   4,
-        "S10":    5
+        "S500": 4,
+        "S10": 5
       }
     }
   },
   "nomes_alternativos": {
-    "Comum":  ["GASOLINA", "GAS. COMUM", "GASOLINA COMUM"],
-    "Adit":   ["V POWER", "V-POWER", "ADITIVADA", "GAS.WPOWER"],
-    "Etanol": ["ETANOL", "ALCOOL"],
-    "S500":   ["DIESEL", "DIESEL BS500", "DIESEL S500"],
-    "S10":    ["S10", "DIESEL S10", "DIESEL S-10", "S 10 T 5", "S10 T 7"]
+    "Comum": [
+      "GASOLINA",
+      "GAS. COMUM",
+      "GASOLINA COMUM"
+    ],
+    "Adit": [
+      "V POWER",
+      "V-POWER",
+      "ADITIVADA",
+      "GAS.WPOWER"
+    ],
+    "Etanol": [
+      "ETANOL",
+      "ALCOOL"
+    ],
+    "S500": [
+      "DIESEL",
+      "DIESEL BS500",
+      "DIESEL S500"
+    ],
+    "S10": [
+      "S10",
+      "DIESEL S10",
+      "DIESEL S-10",
+      "S 10 T 5",
+      "S10 T 7"
+    ]
   }
 }
