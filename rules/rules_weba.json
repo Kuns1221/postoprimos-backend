@@ -1,0 +1,33 @@
+{
+  "posto": "weba",
+  "arquivo": "weba",
+  "descricao": "Posto Weba",
+  "estrutura_planilha": {
+    "aba": "2026",
+    "estoque": {
+      "linha_cabecalho": 6,
+      "linha_valores": 7,
+      "colunas": {
+        "Etanol": 0,
+        "Adit": 1,
+        "Comum": 2
+      }
+    },
+    "vendas": {
+      "linha_inicio_dados": 13,
+      "linha_fim_dados": 50,
+      "coluna_data": 0,
+      "leitura": "ultima_linha_preenchida",
+      "colunas": {
+        "Etanol": 1,
+        "Adit": 2,
+        "Comum": 3
+      }
+    }
+  },
+  "nomes_alternativos": {
+    "Etanol": ["ETANOL COM", "ETANOL", "ALCOOL"],
+    "Adit": ["GAS. V-POWER", "GASO. V-POWER", "V-POWER", "ADITIVADA"],
+    "Comum": ["GAS. COMUM", "GASOLINA COMUM", "GASOLINA"]
+  }
+}

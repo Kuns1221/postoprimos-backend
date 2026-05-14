@@ -316,6 +316,7 @@ PROCESSADORES = {
     "florida":     processar_6primos,
     "stabarbara":  processar_6primos,
     "picheth":     processar_6primos,
+    "weba":        processar_4primos,
 }
 
 def processar_planilha(caminho: str, nome_arquivo: str) -> dict:
