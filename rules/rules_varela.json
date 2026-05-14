@@ -1,0 +1,37 @@
+{
+  "posto": "varela",
+  "arquivo": "varela",
+  "descricao": "Posto Varela",
+  "identificacao_conteudo": ["VARELA"],
+  "estrutura_planilha": {
+    "aba": "Relatorio",
+    "estoque": {
+      "linha_cabecalho": 5,
+      "linha_valores": 6,
+      "colunas": {
+        "S500": 0,
+        "Adit": [1, 5],
+        "Etanol": 2,
+        "Comum": [3, 4]
+      }
+    },
+    "vendas": {
+      "linha_inicio_dados": 12,
+      "linha_fim_dados": 21,
+      "coluna_data": 0,
+      "leitura": "ultima_linha_preenchida",
+      "colunas": {
+        "Etanol": 1,
+        "S500": 2,
+        "Comum": 3,
+        "Adit": 4
+      }
+    }
+  },
+  "nomes_alternativos": {
+    "S500": ["DIESEL", "DIESEL S500", "DIESEL S-500", "DIESEL BS500"],
+    "Adit": ["G.VPOWER", "GAS VPOWER", "GAS V-POWER", "V-POWER", "ADITIVADA"],
+    "Etanol": ["ETANOL", "ALCOOL"],
+    "Comum": ["G.COMUM", "GAS COMUM", "GASOLINA COMUM"]
+  }
+}

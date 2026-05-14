@@ -1,0 +1,40 @@
+{
+  "posto": "ppa",
+  "arquivo": "ppa",
+  "descricao": "Posto PPA",
+  "identificacao_conteudo": ["PPA"],
+  "estrutura_planilha": {
+    "aba": "Plan1",
+    "estoque": {
+      "linha_cabecalho": 6,
+      "linha_valores": 7,
+      "colunas": {
+        "Comum": 0,
+        "Adit": [1, 3],
+        "Etanol": 2,
+        "S10": 4,
+        "S500": 5
+      }
+    },
+    "vendas": {
+      "linha_inicio_dados": 13,
+      "linha_fim_dados": 22,
+      "coluna_data": 0,
+      "leitura": "ultima_linha_preenchida",
+      "colunas": {
+        "Etanol": 1,
+        "Adit": 2,
+        "Comum": 3,
+        "S10": 4,
+        "S500": 5
+      }
+    }
+  },
+  "nomes_alternativos": {
+    "Comum": ["GAS. COMUM", "GASOLINA COMUM", "GAS COMUM"],
+    "Adit": ["GAS. ADITIVADA", "GASOLINA DTC", "GASOLINA ADITIVADA", "V-POWER", "ADITIVADA"],
+    "Etanol": ["ETANOL", "ALCOOL"],
+    "S10": ["DIESEL S10", "DIESEL BS-10", "DIESEL S-10", "S10"],
+    "S500": ["DIESEL S500", "DIESEL S-500", "DIESEL BS500", "S500"]
+  }
+}

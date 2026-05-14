@@ -317,6 +317,12 @@ PROCESSADORES = {
     "stabarbara":  processar_6primos,
     "picheth":     processar_6primos,
     "weba":        processar_4primos,
+    "db":          processar_4primos,
+    "varela":      processar_4primos,
+    "ppa":         processar_4primos,
+    "emf":         processar_4primos,
+    "campeche":    processar_trevo4,
+    "rzr":         processar_trevo4,
 }
 
 def processar_planilha(caminho: str, nome_arquivo: str) -> dict:

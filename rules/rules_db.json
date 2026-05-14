@@ -1,0 +1,40 @@
+{
+  "posto": "db",
+  "arquivo": "db",
+  "descricao": "Posto DB",
+  "identificacao_conteudo": ["DB"],
+  "estrutura_planilha": {
+    "aba": "Plan1",
+    "estoque": {
+      "linha_cabecalho": 6,
+      "linha_valores": 7,
+      "colunas": {
+        "Comum": 0,
+        "S10": 1,
+        "Etanol": 2,
+        "S500": 3,
+        "Adit": 4
+      }
+    },
+    "vendas": {
+      "linha_inicio_dados": 13,
+      "linha_fim_dados": 18,
+      "coluna_data": 0,
+      "leitura": "ultima_linha_preenchida",
+      "colunas": {
+        "Etanol": 1,
+        "Comum": 2,
+        "Adit": 3,
+        "S10": 4,
+        "S500": 5
+      }
+    }
+  },
+  "nomes_alternativos": {
+    "Comum": ["GAS. COMUM", "GAS COMUM", "GASOLINA COMUM"],
+    "S10": ["DIESEL S10", "DIESEL BS-10", "DIESEL S-10", "S10"],
+    "Etanol": ["ETANOL", "ALCOOL"],
+    "S500": ["DIESEL S500", "DIESEL S-500", "DIESEL BS500", "S500"],
+    "Adit": ["GAS VPOWER", "GAS V-POWER", "V-POWER", "ADITIVADA"]
+  }
+}

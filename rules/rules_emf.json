@@ -1,0 +1,34 @@
+{
+  "posto": "emf",
+  "arquivo": "emf",
+  "descricao": "Posto EMF",
+  "identificacao_conteudo": ["POSTO EMF", "EMF"],
+  "estrutura_planilha": {
+    "aba": "Relatorio",
+    "estoque": {
+      "linha_cabecalho": 6,
+      "linha_valores": 7,
+      "colunas": {
+        "Etanol": 1,
+        "Comum": 2,
+        "Adit": 3
+      }
+    },
+    "vendas": {
+      "linha_inicio_dados": 13,
+      "linha_fim_dados": 18,
+      "coluna_data": 0,
+      "leitura": "ultima_linha_preenchida",
+      "colunas": {
+        "Etanol": 1,
+        "Comum": 2,
+        "Adit": 3
+      }
+    }
+  },
+  "nomes_alternativos": {
+    "Etanol": ["ETANOL", "ALCOOL"],
+    "Comum": ["GASOLINA C.", "GASOLINA COMUM", "GAS. COMUM"],
+    "Adit": ["GASOLINA AD.", "GASOLINA ADITIVADA", "GAS. ADITIVADA", "V-POWER", "ADITIVADA"]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "posto": "rzr",
+  "arquivo": "rzr",
+  "descricao": "Posto Primos Pequeno Principe",
+  "identificacao_conteudo": ["PRIMOS PEQUENO PRINCIPE", "RZR"],
+  "estrutura_planilha": {
+    "aba": "Plan1",
+    "estoque": {
+      "linha_inicio_dados": 8,
+      "linha_fim_dados": 37,
+      "coluna_data": 0,
+      "leitura": "ultima_linha_preenchida",
+      "colunas": {
+        "Etanol": 1,
+        "Adit": [2, 3],
+        "Comum": 4
+      }
+    },
+    "vendas": {
+      "linha_inicio_dados": 45,
+      "linha_fim_dados": 74,
+      "coluna_data": 0,
+      "leitura": "ultima_linha_preenchida",
+      "coluna_total": 5,
+      "colunas": {
+        "Etanol": 1,
+        "Adit": 2,
+        "Comum": 3
+      }
+    }
+  },
+  "nomes_alternativos": {
+    "Etanol": ["ETANOL", "ALCOOL"],
+    "Adit": ["GAS. ADT", "GAS.ADT", "GASOLINA ADITIVADA", "V-POWER", "ADITIVADA"],
+    "Comum": ["GAS.COM", "GAS. COM", "GASOLINA COMUM", "GAS. COMUM"]
+  }
+}

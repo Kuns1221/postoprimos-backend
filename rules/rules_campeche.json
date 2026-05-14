@@ -1,0 +1,40 @@
+{
+  "posto": "campeche",
+  "arquivo": "campeche",
+  "descricao": "Posto Primos do Campeche",
+  "identificacao_conteudo": ["POSTO PRIMOS DO CAMPECHE", "CAMPECHE"],
+  "estrutura_planilha": {
+    "aba": "Plan1",
+    "estoque": {
+      "linha_inicio_dados": 8,
+      "linha_fim_dados": 38,
+      "coluna_data": 0,
+      "leitura": "ultima_linha_preenchida",
+      "colunas": {
+        "Adit": [1, 4],
+        "Comum": [2, 5],
+        "Etanol": 3,
+        "S10": 6
+      }
+    },
+    "vendas": {
+      "linha_inicio_dados": 48,
+      "linha_fim_dados": 78,
+      "coluna_data": 0,
+      "leitura": "ultima_linha_preenchida",
+      "coluna_total": 5,
+      "colunas": {
+        "Adit": 1,
+        "Comum": 2,
+        "Etanol": 3,
+        "S10": 4
+      }
+    }
+  },
+  "nomes_alternativos": {
+    "Adit": ["G. ADITIVADA", "GASOLINA ADIT", "GASOLINA ADITIVADA", "V-POWER", "ADITIVADA"],
+    "Comum": ["G. COMUM", "GASOLINA COMUM", "GAS. COMUM"],
+    "Etanol": ["ETANOL C.", "ETANOL", "ALCOOL"],
+    "S10": ["DIESEL S10", "DIESEL S-10", "S10"]
+  }
+}
