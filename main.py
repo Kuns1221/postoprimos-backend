@@ -1,13 +1,12 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
 import uvicorn
 import os
 
 from processor import processar_planilha
+from firebase_db import salvar_historico, buscar_historico, buscar_postos_disponiveis
 
-app = FastAPI(title="PostoPrimos API", version="1.0.0")
+app = FastAPI(title="PostoPrimos API", version="2.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,7 +20,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @app.get("/")
 def root():
-    return {"status": "PostoPrimos API rodando", "versao": "1.0.0"}
+    return {"status": "PostoPrimos API rodando", "versao": "2.0.0"}
 
 @app.get("/health")
 def health():
@@ -44,6 +43,28 @@ async def processar(arquivo: UploadFile = File(...)):
         raise HTTPException(status_code=422, detail=resultado["erro"])
 
     return resultado
+
+@app.post("/salvar")
+async def salvar(dados: dict):
+    try:
+        id_salvo = salvar_historico(dados)
+        return {"ok": True, "id": id_salvo}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/historico")
+def historico(posto: str = Query(None), limite: int = Query(100)):
+    try:
+        return buscar_historico(posto=posto, limite=limite)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/historico/postos")
+def historico_postos():
+    try:
+        return buscar_postos_disponiveis()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
