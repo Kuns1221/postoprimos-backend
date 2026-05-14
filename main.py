@@ -66,5 +66,15 @@ def historico_postos():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/test-firebase")
+def test_firebase():
+    try:
+        from firebase_db import get_db
+        db = get_db()
+        db.collection("test").document("ping").set({"ok": True})
+        return {"status": "Firebase conectado com sucesso"}
+    except Exception as e:
+        return {"status": "Erro", "detalhe": str(e)}
+
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
