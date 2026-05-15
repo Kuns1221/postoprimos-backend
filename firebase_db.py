@@ -19,6 +19,20 @@ def get_db():
         _db = firestore.client()
     return _db
 
+def _extrair_data_dia(data: dict) -> str:
+    """Extrai a data no fuso Brasil. Usa data_dia se disponível, senão converte data_registro (UTC) para BRT."""
+    dia = data.get("data_dia")
+    if dia:
+        return dia
+    reg = data.get("data_registro", "")
+    if not reg:
+        return ""
+    try:
+        dt = datetime.fromisoformat(reg)
+        return dt.astimezone(BR_TZ).strftime("%Y-%m-%d")
+    except Exception:
+        return reg[:10]
+
 def salvar_historico(dados: dict) -> str:
     db = get_db()
     agora_br = datetime.now(BR_TZ)
@@ -40,8 +54,7 @@ def buscar_datas_disponiveis() -> list:
     docs = db.collection("historico").stream()
     datas = {}
     for d in docs:
-        data = d.to_dict()
-        dia = data.get("data_dia") or data.get("data_registro", "")[:10]
+        dia = _extrair_data_dia(d.to_dict())
         if dia:
             datas[dia] = datas.get(dia, 0) + 1
     return [{"data": k, "total": v} for k, v in sorted(datas.items(), reverse=True)]
@@ -52,10 +65,19 @@ def buscar_por_data(data_dia: str) -> list:
     result = []
     for d in docs:
         data = d.to_dict()
-        dia = data.get("data_dia") or data.get("data_registro", "")[:10]
-        if dia == data_dia:
+        if _extrair_data_dia(data) == data_dia:
             result.append({"id": d.id, **data})
     return sorted(result, key=lambda x: x.get("descricao", ""))
+
+def deletar_por_data(data_dia: str) -> int:
+    db = get_db()
+    docs = list(db.collection("historico").stream())
+    refs = [d.reference for d in docs if _extrair_data_dia(d.to_dict()) == data_dia]
+    batch = db.batch()
+    for ref in refs:
+        batch.delete(ref)
+    batch.commit()
+    return len(refs)
 
 def buscar_postos_disponiveis() -> list:
     db = get_db()
