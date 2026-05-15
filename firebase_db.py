@@ -35,9 +35,9 @@ def _extrair_data_dia(data: dict) -> str:
 
 def salvar_historico(dados: dict) -> str:
     db = get_db()
-    agora_br = datetime.now(BR_TZ)
+    data_planilha = dados.pop("data_planilha", None)
     dados["data_registro"] = datetime.now(timezone.utc).isoformat()
-    dados["data_dia"] = agora_br.strftime("%Y-%m-%d")
+    dados["data_dia"] = data_planilha if data_planilha else datetime.now(BR_TZ).strftime("%Y-%m-%d")
     _, ref = db.collection("historico").add(dados)
     return ref.id
 
