@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException, Query
+from fastapi import FastAPI, UploadFile, File, HTTPException, Query, Form
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import os
@@ -27,7 +27,7 @@ def health():
     return {"status": "ok"}
 
 @app.post("/processar")
-async def processar(arquivo: UploadFile = File(...)):
+async def processar(arquivo: UploadFile = File(...), data_arquivo: str = Form(None)):
     if not arquivo.filename.endswith((".xls", ".xlsx")):
         raise HTTPException(status_code=400, detail="Apenas arquivos .xls ou .xlsx são aceitos.")
 
@@ -42,6 +42,8 @@ async def processar(arquivo: UploadFile = File(...)):
     if "erro" in resultado:
         raise HTTPException(status_code=422, detail=resultado["erro"])
 
+    if data_arquivo:
+        resultado["data_planilha"] = data_arquivo
     return resultado
 
 @app.post("/salvar")
