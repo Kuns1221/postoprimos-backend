@@ -69,6 +69,11 @@ def buscar_por_data(data_dia: str) -> list:
             result.append({"id": d.id, **data})
     return sorted(result, key=lambda x: x.get("descricao", ""))
 
+def deletar_por_id(doc_id: str) -> bool:
+    db = get_db()
+    db.collection("historico").document(doc_id).delete()
+    return True
+
 def deletar_por_data(data_dia: str) -> int:
     db = get_db()
     docs = list(db.collection("historico").stream())
