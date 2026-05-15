@@ -13,25 +13,6 @@ NOMES_EXIBICAO = {
     "EtanolVP": "Etanol V-Power",
 }
 
-def _ler_data_df(df: pd.DataFrame, linha: int, coluna: int):
-    """Extrai a data do arquivo na posição dada. Retorna YYYY-MM-DD ou None."""
-    try:
-        val = df.iloc[linha, coluna]
-        if pd.isna(val):
-            return None
-        if hasattr(val, 'strftime'):
-            return val.strftime('%Y-%m-%d')
-        import re
-        s = str(val).strip()
-        m = re.match(r'(\d{1,2})[/\-](\d{1,2})[/\-](\d{4})', s)
-        if m:
-            return f"{m.group(3)}-{m.group(2).zfill(2)}-{m.group(1).zfill(2)}"
-        m = re.match(r'(\d{4})[/\-](\d{2})[/\-](\d{2})', s)
-        if m:
-            return s[:10].replace('/', '-')
-        return None
-    except Exception:
-        return None
 
 def ler_valor(df: pd.DataFrame, linha: int, coluna: int) -> float:
     """Lê um valor numérico do DataFrame com segurança."""
@@ -160,7 +141,7 @@ def processar_gaslab(df: pd.DataFrame, rule: dict) -> dict:
         val = ler_valor(df, linha_vnd, idx)
         vendas[combustivel] = vendas.get(combustivel, 0) + val
 
-    return montar_resultado(rule, estoques, vendas, _ler_data_df(df, linha_vnd, col_data_v))
+    return montar_resultado(rule, estoques, vendas)
 
 
 def processar_cafe(df: pd.DataFrame, rule: dict) -> dict:
@@ -203,7 +184,7 @@ def processar_cafe(df: pd.DataFrame, rule: dict) -> dict:
         if col_venda is not None:
             vendas[nome] = ler_valor(df, linha_vnd, col_venda)
 
-    return montar_resultado(rule, estoques, vendas, _ler_data_df(df, linha_vnd, col_data_v))
+    return montar_resultado(rule, estoques, vendas)
 
 
 # ─────────────────────────────────────────────
@@ -277,7 +258,7 @@ def processar_4primos(df: pd.DataFrame, rule: dict) -> dict:
         else:
             vendas[combustivel] = ler_valor(df, linha_vnd, col)
 
-    return montar_resultado(rule, estoques, vendas, _ler_data_df(df, linha_vnd, col_data))
+    return montar_resultado(rule, estoques, vendas)
 
 
 def processar_trevo4(df: pd.DataFrame, rule: dict) -> dict:
@@ -316,7 +297,7 @@ def processar_trevo4(df: pd.DataFrame, rule: dict) -> dict:
         else:
             vendas[combustivel] = ler_valor(df, linha_vnd, col)
 
-    return montar_resultado(rule, estoques, vendas, _ler_data_df(df, linha_vnd, col_data_v))
+    return montar_resultado(rule, estoques, vendas)
 
 # ─────────────────────────────────────────────
 # ENTRY POINT
