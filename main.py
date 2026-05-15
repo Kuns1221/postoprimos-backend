@@ -82,7 +82,7 @@ def historico_por_data(data: str = Query(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.delete("/historico/{doc_id}")
+@app.delete("/historico/id/{doc_id}")
 def deletar_historico_por_id(doc_id: str):
     try:
         deletar_por_id(doc_id)
