@@ -4,7 +4,7 @@ import uvicorn
 import os
 
 from processor import processar_planilha
-from firebase_db import salvar_historico, buscar_historico, buscar_postos_disponiveis
+from firebase_db import salvar_historico, buscar_historico, buscar_postos_disponiveis, buscar_datas_disponiveis, buscar_por_data
 
 app = FastAPI(title="PostoPrimos API", version="2.0.0")
 
@@ -63,6 +63,20 @@ def historico(posto: str = Query(None), limite: int = Query(100)):
 def historico_postos():
     try:
         return buscar_postos_disponiveis()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/historico/datas")
+def historico_datas():
+    try:
+        return buscar_datas_disponiveis()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/historico/por-data")
+def historico_por_data(data: str = Query(...)):
+    try:
+        return buscar_por_data(data)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

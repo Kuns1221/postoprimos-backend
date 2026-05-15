@@ -2,9 +2,10 @@ import os
 import json
 import firebase_admin
 from firebase_admin import credentials, firestore
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 _db = None
+BR_TZ = timezone(timedelta(hours=-3))
 
 def get_db():
     global _db
@@ -20,7 +21,9 @@ def get_db():
 
 def salvar_historico(dados: dict) -> str:
     db = get_db()
+    agora_br = datetime.now(BR_TZ)
     dados["data_registro"] = datetime.now(timezone.utc).isoformat()
+    dados["data_dia"] = agora_br.strftime("%Y-%m-%d")
     _, ref = db.collection("historico").add(dados)
     return ref.id
 
@@ -31,6 +34,28 @@ def buscar_historico(posto: str = None, limite: int = 100) -> list:
         col = col.where("posto", "==", posto)
     docs = col.order_by("data_registro", direction=firestore.Query.DESCENDING).limit(limite).stream()
     return [{"id": d.id, **d.to_dict()} for d in docs]
+
+def buscar_datas_disponiveis() -> list:
+    db = get_db()
+    docs = db.collection("historico").stream()
+    datas = {}
+    for d in docs:
+        data = d.to_dict()
+        dia = data.get("data_dia") or data.get("data_registro", "")[:10]
+        if dia:
+            datas[dia] = datas.get(dia, 0) + 1
+    return [{"data": k, "total": v} for k, v in sorted(datas.items(), reverse=True)]
+
+def buscar_por_data(data_dia: str) -> list:
+    db = get_db()
+    docs = db.collection("historico").stream()
+    result = []
+    for d in docs:
+        data = d.to_dict()
+        dia = data.get("data_dia") or data.get("data_registro", "")[:10]
+        if dia == data_dia:
+            result.append({"id": d.id, **data})
+    return sorted(result, key=lambda x: x.get("descricao", ""))
 
 def buscar_postos_disponiveis() -> list:
     db = get_db()
