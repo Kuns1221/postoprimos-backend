@@ -72,12 +72,12 @@ def buscar_por_data(data_dia: str) -> list:
 def deletar_por_data(data_dia: str) -> int:
     db = get_db()
     docs = list(db.collection("historico").stream())
-    refs = [d.reference for d in docs if _extrair_data_dia(d.to_dict()) == data_dia]
-    batch = db.batch()
-    for ref in refs:
-        batch.delete(ref)
-    batch.commit()
-    return len(refs)
+    count = 0
+    for d in docs:
+        if _extrair_data_dia(d.to_dict()) == data_dia:
+            d.reference.delete()
+            count += 1
+    return count
 
 def buscar_postos_disponiveis() -> list:
     db = get_db()
