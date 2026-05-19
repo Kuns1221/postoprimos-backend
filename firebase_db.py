@@ -54,20 +54,30 @@ def buscar_datas_disponiveis() -> list:
     docs = db.collection("historico").stream()
     datas = {}
     for d in docs:
-        dia = _extrair_data_dia(d.to_dict())
-        if dia:
-            datas[dia] = datas.get(dia, 0) + 1
-    return [{"data": k, "total": v} for k, v in sorted(datas.items(), reverse=True)]
+        data = d.to_dict()
+        dia = _extrair_data_dia(data)
+        posto = data.get("posto")
+        if dia and posto:
+            if dia not in datas:
+                datas[dia] = set()
+            datas[dia].add(posto)
+    return [{"data": k, "total": len(v)} for k, v in sorted(datas.items(), reverse=True)]
 
 def buscar_por_data(data_dia: str) -> list:
     db = get_db()
     docs = db.collection("historico").stream()
-    result = []
+    por_posto = {}
     for d in docs:
         data = d.to_dict()
-        if _extrair_data_dia(data) == data_dia:
-            result.append({"id": d.id, **data})
-    return sorted(result, key=lambda x: x.get("descricao", ""))
+        if _extrair_data_dia(data) != data_dia:
+            continue
+        posto = data.get("posto")
+        if posto is None:
+            continue
+        existente = por_posto.get(posto)
+        if existente is None or data.get("data_registro", "") > existente.get("data_registro", ""):
+            por_posto[posto] = {"id": d.id, **data}
+    return sorted(por_posto.values(), key=lambda x: x.get("descricao", ""))
 
 def deletar_por_id(doc_id: str) -> bool:
     db = get_db()
