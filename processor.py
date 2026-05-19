@@ -210,7 +210,7 @@ def montar_resultado(rule: dict, estoques: dict, vendas: dict, data_planilha: st
 
     # Remove GNV e ordena
     combustiveis_resultado = [c for c in combustiveis_resultado if c["combustivel"] != "GNV"]
-    ordem = ["S500", "S10", "Adit", "Podium", "Comum", "Etanol", "EtanolVP"]
+    ordem = ["Comum", "Podium", "Adit", "Etanol", "EtanolVP", "S500", "S10"]
     combustiveis_resultado.sort(key=lambda x: ordem.index(x["combustivel"]) if x["combustivel"] in ordem else 99)
 
     total_estoque = round(sum(c["estoque"] for c in combustiveis_resultado), 2)
