@@ -94,6 +94,28 @@ def deletar_por_data(data_dia: str) -> int:
             count += 1
     return count
 
+def limpar_duplicatas() -> dict:
+    db = get_db()
+    docs = list(db.collection("historico").stream())
+    por_chave = {}
+    for d in docs:
+        data = d.to_dict()
+        dia = _extrair_data_dia(data)
+        posto = data.get("posto")
+        if not dia or not posto:
+            continue
+        chave = f"{dia}|{posto}"
+        existente = por_chave.get(chave)
+        if existente is None or data.get("data_registro", "") > existente["data"].get("data_registro", ""):
+            por_chave[chave] = {"ref": d.reference, "data": data}
+        else:
+            d.reference.delete()
+
+    # IDs a manter
+    manter = {v["ref"].id for v in por_chave.values()}
+    deletados = sum(1 for d in docs if d.id not in manter)
+    return {"mantidos": len(manter), "deletados": deletados}
+
 def buscar_postos_disponiveis() -> list:
     db = get_db()
     docs = db.collection("historico").stream()

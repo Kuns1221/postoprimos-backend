@@ -4,7 +4,7 @@ import uvicorn
 import os
 
 from processor import processar_planilha
-from firebase_db import salvar_historico, buscar_historico, buscar_postos_disponiveis, buscar_datas_disponiveis, buscar_por_data, deletar_por_data, deletar_por_id
+from firebase_db import salvar_historico, buscar_historico, buscar_postos_disponiveis, buscar_datas_disponiveis, buscar_por_data, deletar_por_data, deletar_por_id, limpar_duplicatas
 
 app = FastAPI(title="PostoPrimos API", version="2.0.0")
 
@@ -95,6 +95,13 @@ def deletar_historico_por_data(data: str = Query(...)):
     try:
         count = deletar_por_data(data)
         return {"ok": True, "deletados": count}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/admin/limpar-duplicatas")
+def admin_limpar_duplicatas():
+    try:
+        return limpar_duplicatas()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
