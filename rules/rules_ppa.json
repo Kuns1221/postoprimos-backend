@@ -14,6 +14,9 @@
         "Etanol": 2,
         "S10": 4,
         "S500": 5
+      },
+      "nomes_colunas": {
+        "Adit": ["T1", "T2"]
       }
     },
     "vendas": {

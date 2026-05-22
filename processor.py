@@ -71,11 +71,18 @@ def processar_6primos(df: pd.DataFrame, rule: dict) -> dict:
         val = ler_valor(df, linha_estoque, tanque["coluna"])
         estoques_tanque[tanque["tanque"]] = val
 
-    # Agrupa estoques
+    # Agrupa estoques e registra valores individuais por tanque
     estoques = {}
+    bombas_por_combustivel = {}
     for combustivel, config in agrupamento.items():
-        total = sum(estoques_tanque.get(t, 0) for t in config["tanques"])
-        estoques[combustivel] = round(total, 2)
+        ids = config["tanques"]
+        valores = [estoques_tanque.get(t, 0) for t in ids]
+        estoques[combustivel] = round(sum(valores), 2)
+        if len(ids) > 1:
+            bombas_por_combustivel[combustivel] = [
+                {"nome": f"T{ids[i]}", "estoque": round(valores[i], 2)}
+                for i in range(len(ids))
+            ]
 
     # Lê vendas
     linha_cabecalho_vendas = estrutura["vendas"]["linha_cabecalho"] - 1
@@ -94,7 +101,11 @@ def processar_6primos(df: pd.DataFrame, rule: dict) -> dict:
                 vendas[combustivel] = vendas.get(combustivel, 0) + val
                 break
 
-    return montar_resultado(rule, estoques, vendas)
+    resultado = montar_resultado(rule, estoques, vendas)
+    for comb in resultado["combustiveis"]:
+        if comb["combustivel"] in bombas_por_combustivel:
+            comb["bombas"] = bombas_por_combustivel[comb["combustivel"]]
+    return resultado
 
 
 def processar_gaslab(df: pd.DataFrame, rule: dict) -> dict:
@@ -169,22 +180,34 @@ def processar_cafe(df: pd.DataFrame, rule: dict) -> dict:
 
     estoques = {}
     vendas = {}
+    bombas_por_combustivel = {}
 
     for comb in combustiveis:
         nome = comb["combustivel"]
+        colunas_est = comb.get("colunas_estoque", [])
 
-        # Estoque
-        total_estoque = 0
-        for col in comb.get("colunas_estoque", []):
-            total_estoque += ler_valor(df, linha_est, col)
-        estoques[nome] = round(total_estoque, 2)
+        if len(colunas_est) > 1:
+            valores = [ler_valor(df, linha_est, col) for col in colunas_est]
+            estoques[nome] = round(sum(valores), 2)
+            bombas_por_combustivel[nome] = [
+                {"nome": f"T{i+1}", "estoque": round(v, 2)}
+                for i, v in enumerate(valores)
+            ]
+        else:
+            total_estoque = 0
+            for col in colunas_est:
+                total_estoque += ler_valor(df, linha_est, col)
+            estoques[nome] = round(total_estoque, 2)
 
-        # Venda
         col_venda = comb.get("coluna_venda")
         if col_venda is not None:
             vendas[nome] = ler_valor(df, linha_vnd, col_venda)
 
-    return montar_resultado(rule, estoques, vendas)
+    resultado = montar_resultado(rule, estoques, vendas)
+    for comb_res in resultado["combustiveis"]:
+        if comb_res["combustivel"] in bombas_por_combustivel:
+            comb_res["bombas"] = bombas_por_combustivel[comb_res["combustivel"]]
+    return resultado
 
 
 # ─────────────────────────────────────────────
@@ -235,12 +258,20 @@ def processar_4primos(df: pd.DataFrame, rule: dict) -> dict:
 
     linha_est = est_cfg["linha_valores"] - 1
     colunas_est = est_cfg["colunas"]
+    nomes_colunas = est_cfg.get("nomes_colunas", {})
 
-    # Estoque — S10 é soma de dois tanques
+    # Estoque — combustíveis com lista de colunas são somados; valores individuais guardados
     estoques = {}
+    bombas_por_combustivel = {}
     for combustivel, col in colunas_est.items():
         if isinstance(col, list):
-            estoques[combustivel] = round(sum(ler_valor(df, linha_est, c) for c in col), 2)
+            valores = [ler_valor(df, linha_est, c) for c in col]
+            estoques[combustivel] = round(sum(valores), 2)
+            nomes = nomes_colunas.get(combustivel, [f"T{i+1}" for i in range(len(col))])
+            bombas_por_combustivel[combustivel] = [
+                {"nome": nomes[i] if i < len(nomes) else f"T{i+1}", "estoque": round(v, 2)}
+                for i, v in enumerate(valores)
+            ]
         else:
             estoques[combustivel] = ler_valor(df, linha_est, col)
 
@@ -258,7 +289,11 @@ def processar_4primos(df: pd.DataFrame, rule: dict) -> dict:
         else:
             vendas[combustivel] = ler_valor(df, linha_vnd, col)
 
-    return montar_resultado(rule, estoques, vendas)
+    resultado = montar_resultado(rule, estoques, vendas)
+    for comb in resultado["combustiveis"]:
+        if comb["combustivel"] in bombas_por_combustivel:
+            comb["bombas"] = bombas_por_combustivel[comb["combustivel"]]
+    return resultado
 
 
 def processar_trevo4(df: pd.DataFrame, rule: dict) -> dict:
@@ -266,6 +301,7 @@ def processar_trevo4(df: pd.DataFrame, rule: dict) -> dict:
     estrutura = rule["estrutura_planilha"]
     est_cfg = estrutura["estoque"]
     vnd_cfg = estrutura["vendas"]
+    nomes_colunas = est_cfg.get("nomes_colunas", {})
 
     # Estoque — última linha preenchida
     col_data = est_cfg.get("coluna_data", 0)
@@ -275,9 +311,16 @@ def processar_trevo4(df: pd.DataFrame, rule: dict) -> dict:
     linha_est = ultima_linha_preenchida(df, col_data, linha_inicio_est, linha_fim_est, ncols_max=ncols_max_est)
 
     estoques = {}
+    bombas_por_combustivel = {}
     for combustivel, col in est_cfg["colunas"].items():
         if isinstance(col, list):
-            estoques[combustivel] = round(sum(ler_valor(df, linha_est, c) for c in col), 2)
+            valores = [ler_valor(df, linha_est, c) for c in col]
+            estoques[combustivel] = round(sum(valores), 2)
+            nomes = nomes_colunas.get(combustivel, [f"T{i+1}" for i in range(len(col))])
+            bombas_por_combustivel[combustivel] = [
+                {"nome": nomes[i] if i < len(nomes) else f"T{i+1}", "estoque": round(v, 2)}
+                for i, v in enumerate(valores)
+            ]
         else:
             estoques[combustivel] = ler_valor(df, linha_est, col)
 
@@ -297,7 +340,11 @@ def processar_trevo4(df: pd.DataFrame, rule: dict) -> dict:
         else:
             vendas[combustivel] = ler_valor(df, linha_vnd, col)
 
-    return montar_resultado(rule, estoques, vendas)
+    resultado = montar_resultado(rule, estoques, vendas)
+    for comb in resultado["combustiveis"]:
+        if comb["combustivel"] in bombas_por_combustivel:
+            comb["bombas"] = bombas_por_combustivel[comb["combustivel"]]
+    return resultado
 
 # ─────────────────────────────────────────────
 # ENTRY POINT

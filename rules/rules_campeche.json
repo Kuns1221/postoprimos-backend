@@ -15,6 +15,10 @@
         "Comum": [2, 5],
         "Etanol": 3,
         "S10": 6
+      },
+      "nomes_colunas": {
+        "Adit": ["T1", "T2"],
+        "Comum": ["T1", "T2"]
       }
     },
     "vendas": {

@@ -18,6 +18,9 @@
         "Adit": 3,
         "Etanol": 4,
         "S10": 5
+      },
+      "nomes_colunas": {
+        "Comum": ["T1", "T2"]
       }
     },
     "vendas": {
