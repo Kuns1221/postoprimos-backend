@@ -20,7 +20,7 @@
     },
     "vendas": {
       "linha_cabecalho": 41,
-      "linha_inicio_dados": 43,
+      "linha_inicio_dados": 42,
       "linha_fim_dados": 73,
       "coluna_data": 0,
       "leitura": "ultima_linha_preenchida",
