@@ -4,7 +4,7 @@ import uvicorn
 import os
 
 from processor import processar_planilha
-from firebase_db import salvar_historico, buscar_historico, buscar_postos_disponiveis, buscar_datas_disponiveis, buscar_por_data, deletar_por_data, deletar_por_id, limpar_duplicatas
+from firebase_db import salvar_historico, buscar_historico, buscar_postos_disponiveis, buscar_datas_disponiveis, buscar_por_data, deletar_por_data, deletar_por_id, limpar_duplicatas, reconstruir_resumo
 
 app = FastAPI(title="PostoPrimos API", version="2.0.0")
 
@@ -102,6 +102,18 @@ def deletar_historico_por_data(data: str = Query(...)):
 def admin_limpar_duplicatas():
     try:
         return limpar_duplicatas()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/admin/reconstruir-resumo")
+def admin_reconstruir_resumo():
+    """
+    Reconstrói o documento metadata/resumo a partir da coleção historico.
+    Chamar UMA VEZ após o deploy para indexar os 50k documentos existentes.
+    Depois disso, o resumo se mantém atualizado automaticamente a cada save/delete.
+    """
+    try:
+        return reconstruir_resumo()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

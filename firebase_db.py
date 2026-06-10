@@ -20,7 +20,6 @@ def get_db():
     return _db
 
 def _extrair_data_dia(data: dict) -> str:
-    """Extrai a data no fuso Brasil. Usa data_dia se disponível, senão converte data_registro (UTC) para BRT."""
     dia = data.get("data_dia")
     if dia:
         return dia
@@ -34,7 +33,6 @@ def _extrair_data_dia(data: dict) -> str:
         return reg[:10]
 
 def _batch_delete(db, refs: list) -> int:
-    """Deleta uma lista de referências em batches de 500 (limite do Firestore)."""
     if not refs:
         return 0
     batch = db.batch()
@@ -48,12 +46,83 @@ def _batch_delete(db, refs: list) -> int:
     batch.commit()
     return count
 
+# ── Metadata / Resumo ─────────────────────────────────────────────────────────
+# O documento metadata/resumo guarda um índice leve de datas e postos.
+# Isso elimina scans completos da coleção em buscar_datas_disponiveis e
+# buscar_postos_disponiveis — de 50k leituras para 1 leitura por chamada.
+
+def _resumo_ref(db):
+    return db.collection("metadata").document("resumo")
+
+def _resumo_add(db, data_dia: str, posto: str, descricao: str):
+    """Registra um posto numa data no resumo. Cria o documento se não existir."""
+    ref = _resumo_ref(db)
+    try:
+        ref.update({
+            f"datas.{data_dia}": firestore.ArrayUnion([posto]),
+            f"postos.{posto}": descricao,
+        })
+    except Exception:
+        ref.set({
+            "datas": {data_dia: [posto]},
+            "postos": {posto: descricao},
+        }, merge=True)
+
+def _resumo_remove_data(db, data_dia: str):
+    """Remove uma data do resumo ao deletar todos os registros dela."""
+    ref = _resumo_ref(db)
+    try:
+        ref.update({f"datas.{data_dia}": firestore.DELETE_FIELD})
+    except Exception:
+        pass
+
+def reconstruir_resumo() -> dict:
+    """
+    Reconstrói o documento metadata/resumo varrendo a coleção historico.
+    Deve ser chamado uma única vez via POST /admin/reconstruir-resumo
+    para popular o índice a partir dos dados existentes.
+    """
+    db = get_db()
+    docs = db.collection("historico").select(
+        ["data_dia", "posto", "descricao", "data_registro"]
+    ).stream()
+
+    datas: dict[str, set] = {}
+    postos: dict[str, str] = {}
+
+    for d in docs:
+        data = d.to_dict()
+        dia = _extrair_data_dia(data)
+        posto = data.get("posto")
+        descricao = data.get("descricao", posto or "")
+        if not dia or not posto:
+            continue
+        datas.setdefault(dia, set()).add(posto)
+        postos.setdefault(posto, descricao)
+
+    resumo = {
+        "datas":  {k: list(v) for k, v in datas.items()},
+        "postos": postos,
+    }
+    _resumo_ref(db).set(resumo)
+    return {"datas": len(datas), "postos": len(postos)}
+
+# ── CRUD principal ────────────────────────────────────────────────────────────
+
 def salvar_historico(dados: dict) -> str:
     db = get_db()
     data_planilha = dados.pop("data_planilha", None)
     dados["data_registro"] = datetime.now(timezone.utc).isoformat()
     dados["data_dia"] = data_planilha if data_planilha else datetime.now(BR_TZ).strftime("%Y-%m-%d")
+
     _, ref = db.collection("historico").add(dados)
+
+    # Atualiza o resumo sem bloquear o retorno em caso de falha
+    try:
+        _resumo_add(db, dados["data_dia"], dados.get("posto", ""), dados.get("descricao", ""))
+    except Exception:
+        pass
+
     return ref.id
 
 def buscar_historico(posto: str = None, limite: int = 100) -> list:
@@ -65,21 +134,21 @@ def buscar_historico(posto: str = None, limite: int = 100) -> list:
     return [{"id": d.id, **d.to_dict()} for d in docs]
 
 def buscar_datas_disponiveis() -> list:
+    """1 leitura Firestore — usa o documento de resumo."""
     db = get_db()
-    # Busca apenas os 3 campos necessários — reduz ~95% do tráfego de dados
-    docs = db.collection("historico").select(["data_dia", "posto", "data_registro"]).stream()
-    datas: dict[str, set] = {}
-    for d in docs:
-        data = d.to_dict()
-        dia = _extrair_data_dia(data)
-        posto = data.get("posto")
-        if dia and posto:
-            datas.setdefault(dia, set()).add(posto)
-    return [{"data": k, "total": len(v)} for k, v in sorted(datas.items(), reverse=True)]
+    doc = _resumo_ref(db).get()
+    if not doc.exists:
+        return []
+    datas = doc.to_dict().get("datas", {})
+    result = [
+        {"data": k, "total": len(v) if isinstance(v, list) else int(v)}
+        for k, v in datas.items()
+    ]
+    return sorted(result, key=lambda x: x["data"], reverse=True)
 
 def buscar_por_data(data_dia: str) -> list:
+    """Filtra no Firestore — lê apenas documentos da data solicitada."""
     db = get_db()
-    # Filtra no Firestore — lê apenas documentos da data solicitada
     docs = db.collection("historico").where("data_dia", "==", data_dia).stream()
     por_posto: dict = {}
     for d in docs:
@@ -99,15 +168,22 @@ def deletar_por_id(doc_id: str) -> bool:
 
 def deletar_por_data(data_dia: str) -> int:
     db = get_db()
-    # Filtra no Firestore + deleta em batch
     docs = list(db.collection("historico").where("data_dia", "==", data_dia).stream())
     refs = [d.reference for d in docs]
-    return _batch_delete(db, refs)
+    count = _batch_delete(db, refs)
+    if count:
+        try:
+            _resumo_remove_data(db, data_dia)
+        except Exception:
+            pass
+    return count
 
 def limpar_duplicatas() -> dict:
     db = get_db()
-    # Busca apenas os campos necessários para detectar duplicatas
-    docs = list(db.collection("historico").select(["data_dia", "posto", "data_registro"]).stream())
+    docs = list(db.collection("historico").select(
+        ["data_dia", "posto", "data_registro"]
+    ).stream())
+
     por_chave: dict = {}
     deletar_refs = []
 
@@ -130,13 +206,10 @@ def limpar_duplicatas() -> dict:
     return {"mantidos": len(por_chave), "deletados": deletados}
 
 def buscar_postos_disponiveis() -> list:
+    """1 leitura Firestore — usa o documento de resumo."""
     db = get_db()
-    # Busca apenas os 2 campos necessários
-    docs = db.collection("historico").select(["posto", "descricao"]).stream()
-    postos: dict = {}
-    for d in docs:
-        data = d.to_dict()
-        posto = data.get("posto")
-        if posto and posto not in postos:
-            postos[posto] = data.get("descricao", posto)
+    doc = _resumo_ref(db).get()
+    if not doc.exists:
+        return []
+    postos = doc.to_dict().get("postos", {})
     return [{"posto": k, "descricao": v} for k, v in sorted(postos.items())]
