@@ -1,6 +1,6 @@
 {
   "posto": "santamonica",
-  "arquivo": "santamonica",
+  "arquivo": "RELATORIO_DIARIO_POSTO_SANTA_MONICA",
   "descricao": "Posto Santa Monica",
   "estrutura_planilha": {
     "aba": "Plan1",
@@ -11,16 +11,10 @@
       "coluna_data": 0,
       "leitura": "ultima_linha_preenchida",
       "colunas": {
-        "Comum": [
-          1,
-          2
-        ],
-        "Adit": 3,
-        "Etanol": 4,
-        "S10": 5
-      },
-      "nomes_colunas": {
-        "Comum": ["T1", "T2"]
+        "Comum":  [1, 3],
+        "Adit":   4,
+        "Etanol": [2, 5],
+        "S10":    6
       }
     },
     "vendas": {
@@ -29,38 +23,19 @@
       "linha_fim_dados": 73,
       "coluna_data": 0,
       "leitura": "ultima_linha_preenchida",
-      "colunas_ignorar": [
-        5
-      ],
+      "colunas_ignorar": [2, 6],
       "colunas": {
         "Etanol": 1,
-        "Comum": 2,
-        "Adit": 3,
-        "S10": 4
+        "Comum":  3,
+        "Adit":   4,
+        "S10":    5
       }
     }
   },
   "nomes_alternativos": {
-    "Comum": [
-      "GASOLINA COMUM",
-      "GAS. COMUM",
-      "GASOLINA"
-    ],
-    "Adit": [
-      "GASOLINA V POWE",
-      "GASOLINA V-POWER",
-      "V-POWER",
-      "ADITIVADA"
-    ],
-    "Etanol": [
-      "ETANOL COMUM",
-      "ETANOL",
-      "ALCOOL"
-    ],
-    "S10": [
-      "DIESEL S10",
-      "DIESEL S-10",
-      "S10"
-    ]
+    "Comum":  ["GASOLINA COMUM", "GAS. COMUM", "GASOLINA"],
+    "Adit":   ["GASOLINA V POWE", "GASOLINA V-POWER", "V-POWER", "ADITIVADA"],
+    "Etanol": ["ETANOL COMUM", "ETANOL", "ALCOOL"],
+    "S10":    ["DIESEL S10", "DIESEL S-10", "S10"]
   }
 }
