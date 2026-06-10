@@ -33,6 +33,21 @@ def _extrair_data_dia(data: dict) -> str:
     except Exception:
         return reg[:10]
 
+def _batch_delete(db, refs: list) -> int:
+    """Deleta uma lista de referências em batches de 500 (limite do Firestore)."""
+    if not refs:
+        return 0
+    batch = db.batch()
+    count = 0
+    for i, ref in enumerate(refs):
+        batch.delete(ref)
+        count += 1
+        if (i + 1) % 500 == 0:
+            batch.commit()
+            batch = db.batch()
+    batch.commit()
+    return count
+
 def salvar_historico(dados: dict) -> str:
     db = get_db()
     data_planilha = dados.pop("data_planilha", None)
@@ -51,26 +66,24 @@ def buscar_historico(posto: str = None, limite: int = 100) -> list:
 
 def buscar_datas_disponiveis() -> list:
     db = get_db()
-    docs = db.collection("historico").stream()
-    datas = {}
+    # Busca apenas os 3 campos necessários — reduz ~95% do tráfego de dados
+    docs = db.collection("historico").select(["data_dia", "posto", "data_registro"]).stream()
+    datas: dict[str, set] = {}
     for d in docs:
         data = d.to_dict()
         dia = _extrair_data_dia(data)
         posto = data.get("posto")
         if dia and posto:
-            if dia not in datas:
-                datas[dia] = set()
-            datas[dia].add(posto)
+            datas.setdefault(dia, set()).add(posto)
     return [{"data": k, "total": len(v)} for k, v in sorted(datas.items(), reverse=True)]
 
 def buscar_por_data(data_dia: str) -> list:
     db = get_db()
-    docs = db.collection("historico").stream()
-    por_posto = {}
+    # Filtra no Firestore — lê apenas documentos da data solicitada
+    docs = db.collection("historico").where("data_dia", "==", data_dia).stream()
+    por_posto: dict = {}
     for d in docs:
         data = d.to_dict()
-        if _extrair_data_dia(data) != data_dia:
-            continue
         posto = data.get("posto")
         if posto is None:
             continue
@@ -86,18 +99,18 @@ def deletar_por_id(doc_id: str) -> bool:
 
 def deletar_por_data(data_dia: str) -> int:
     db = get_db()
-    docs = list(db.collection("historico").stream())
-    count = 0
-    for d in docs:
-        if _extrair_data_dia(d.to_dict()) == data_dia:
-            d.reference.delete()
-            count += 1
-    return count
+    # Filtra no Firestore + deleta em batch
+    docs = list(db.collection("historico").where("data_dia", "==", data_dia).stream())
+    refs = [d.reference for d in docs]
+    return _batch_delete(db, refs)
 
 def limpar_duplicatas() -> dict:
     db = get_db()
-    docs = list(db.collection("historico").stream())
-    por_chave = {}
+    # Busca apenas os campos necessários para detectar duplicatas
+    docs = list(db.collection("historico").select(["data_dia", "posto", "data_registro"]).stream())
+    por_chave: dict = {}
+    deletar_refs = []
+
     for d in docs:
         data = d.to_dict()
         dia = _extrair_data_dia(data)
@@ -107,19 +120,20 @@ def limpar_duplicatas() -> dict:
         chave = f"{dia}|{posto}"
         existente = por_chave.get(chave)
         if existente is None or data.get("data_registro", "") > existente["data"].get("data_registro", ""):
+            if existente:
+                deletar_refs.append(existente["ref"])
             por_chave[chave] = {"ref": d.reference, "data": data}
         else:
-            d.reference.delete()
+            deletar_refs.append(d.reference)
 
-    # IDs a manter
-    manter = {v["ref"].id for v in por_chave.values()}
-    deletados = sum(1 for d in docs if d.id not in manter)
-    return {"mantidos": len(manter), "deletados": deletados}
+    deletados = _batch_delete(db, deletar_refs)
+    return {"mantidos": len(por_chave), "deletados": deletados}
 
 def buscar_postos_disponiveis() -> list:
     db = get_db()
-    docs = db.collection("historico").stream()
-    postos = {}
+    # Busca apenas os 2 campos necessários
+    docs = db.collection("historico").select(["posto", "descricao"]).stream()
+    postos: dict = {}
     for d in docs:
         data = d.to_dict()
         posto = data.get("posto")
