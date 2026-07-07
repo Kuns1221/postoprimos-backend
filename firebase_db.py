@@ -166,9 +166,46 @@ def deletar_por_id(doc_id: str) -> bool:
     db.collection("historico").document(doc_id).delete()
     return True
 
+def salvar_lote(lista: list) -> list:
+    db = get_db()
+    data_dia = lista[0].get("data_planilha") if lista else None
+    if not data_dia:
+        data_dia = datetime.now(BR_TZ).strftime("%Y-%m-%d")
+
+    postos_novos = {item.get("posto") for item in lista if item.get("posto")}
+    existentes = list(
+        db.collection("historico")
+        .where("data_dia", "==", data_dia)
+        .where("posto", "in", list(postos_novos))
+        .select([])
+        .stream()
+    ) if postos_novos else []
+    if existentes:
+        _batch_delete(db, [d.reference for d in existentes])
+
+    ids = []
+    batch = db.batch()
+    for i, dados in enumerate(lista):
+        dados.pop("data_planilha", None)
+        dados["data_registro"] = datetime.now(timezone.utc).isoformat()
+        dados["data_dia"] = data_dia
+        ref = db.collection("historico").document()
+        batch.set(ref, dados)
+        ids.append(ref.id)
+        try:
+            _resumo_add(db, data_dia, dados.get("posto", ""), dados.get("descricao", ""))
+        except Exception:
+            pass
+        if (i + 1) % 500 == 0:
+            batch.commit()
+            batch = db.batch()
+    batch.commit()
+    return ids
+
+
 def deletar_por_data(data_dia: str) -> int:
     db = get_db()
-    docs = list(db.collection("historico").where("data_dia", "==", data_dia).stream())
+    docs = list(db.collection("historico").where("data_dia", "==", data_dia).select([]).stream())
     refs = [d.reference for d in docs]
     count = _batch_delete(db, refs)
     if count:

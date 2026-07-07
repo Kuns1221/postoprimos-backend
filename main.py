@@ -4,7 +4,7 @@ import uvicorn
 import os
 
 from processor import processar_planilha
-from firebase_db import salvar_historico, buscar_historico, buscar_postos_disponiveis, buscar_datas_disponiveis, buscar_por_data, deletar_por_data, deletar_por_id, limpar_duplicatas, reconstruir_resumo
+from firebase_db import salvar_historico, salvar_lote, buscar_historico, buscar_postos_disponiveis, buscar_datas_disponiveis, buscar_por_data, deletar_por_data, deletar_por_id, limpar_duplicatas, reconstruir_resumo
 
 app = FastAPI(title="PostoPrimos API", version="2.0.0")
 
@@ -51,6 +51,19 @@ async def salvar(dados: dict):
     try:
         id_salvo = salvar_historico(dados)
         return {"ok": True, "id": id_salvo}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/salvar-lote")
+async def salvar_em_lote(payload: dict):
+    try:
+        lista = payload.get("postos", [])
+        if not lista:
+            raise HTTPException(status_code=400, detail="Lista de postos vazia.")
+        ids = salvar_lote(lista)
+        return {"ok": True, "ids": ids, "total": len(ids)}
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
