@@ -1,0 +1,15 @@
+services:
+  postoprimos-api:
+    build: .
+    container_name: postoprimos-api
+    restart: unless-stopped
+    ports:
+      - "8000"
+    environment:
+      - FIREBASE_CREDENTIALS=${FIREBASE_CREDENTIALS}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.postoprimos.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.postoprimos.entrypoints=websecure"
+      - "traefik.http.routers.postoprimos.tls.certresolver=letsencrypt"
+      - "traefik.http.services.postoprimos.loadbalancer.server.port=8000"
